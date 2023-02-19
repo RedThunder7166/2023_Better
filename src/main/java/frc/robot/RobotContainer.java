@@ -30,9 +30,12 @@ public class RobotContainer {
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kBack.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton clawToggle = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private final JoystickButton armUp = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton armDown = new JoystickButton(driver, XboxController.Button.kB.value);
-    private final JoystickButton armStop = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton armUp = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton armDown = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton armOffset = new JoystickButton(driver, XboxController.Button.kStart.value);
+    private final JoystickButton wristLeft = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton wristRight = new JoystickButton(driver, XboxController.Button.kY.value);
+
 
 
     /* Subsystems */
@@ -51,6 +54,7 @@ public class RobotContainer {
                 () -> robotCentric.getAsBoolean()
             )
         );
+   //     s_Claaawww.setDefaultCommand(new InstantCommand(() -> s_Claaawww.stop(),s_Claaawww));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -65,15 +69,29 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-       // clawToggle.onTrue(new InstantCommand(() -> s_PneumaticsHub.toggleClawSolenoid()));
+        // clawToggle.onTrue(new InstantCommand(() ->
+        // s_PneumaticsHub.toggleClawSolenoid()));
 
-        armUp.onTrue(new InstantCommand(() -> s_Claaawww.up()));
-        armDown.onTrue(new InstantCommand(() -> s_Claaawww.down()));
-        armStop.onTrue(new InstantCommand(() -> s_Claaawww.stop()));
+        // when up button is pressed, start moving claw up
+        // when down button is pressed, start moving the claw down
+        armUp.onTrue(new InstantCommand(() -> s_Claaawww.armUp()));
+        armDown.onTrue(new InstantCommand(() -> s_Claaawww.armDown()));
+        wristLeft.onTrue(new InstantCommand(() -> s_Claaawww.wristLeft()));
+        wristRight.onTrue(new InstantCommand(() -> s_Claaawww.wristRight()));
+
+
+        // when up or down button is unpressed, stop moving the claw
+        // when stop button is pressed, stop moving the claw
+        armUp.onFalse(new InstantCommand(() -> s_Claaawww.armStop()));
+        armDown.onFalse(new InstantCommand(() -> s_Claaawww.armStop()));
+        armOffset.onTrue(new InstantCommand(() -> s_Claaawww.setArmOffsets())); 
+        wristLeft.onFalse(new InstantCommand(() -> s_Claaawww.wristStop()));
+        wristRight.onFalse(new InstantCommand(() -> s_Claaawww.wristStop()));
     }
 
     /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
+     * Use this to pass the autonomous c
+     * command to the main {@link Robot} class.
      *
      * @return the command to run in autonomous
      */

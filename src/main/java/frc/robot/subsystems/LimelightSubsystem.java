@@ -23,7 +23,7 @@ public class LimelightSubsystem extends SubsystemBase {
     tx = m_cameraTable.getEntry("tx");
     ty = m_cameraTable.getEntry("ty");
     ta = m_cameraTable.getEntry("ta");
-    botpose = m_cameraTable.getEntry("botpose");
+    botpose = m_cameraTable.getEntry("botpose_targetspace");
   }
 
   @Override

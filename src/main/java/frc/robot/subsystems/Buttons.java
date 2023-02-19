@@ -59,9 +59,9 @@ public class Buttons extends SubsystemBase {
     return buttons[index];
   }
 
-  public double getPotentiometer(){
-    return m_leonardoArduino.getRawAxis(Constants.Clawstants.PotentiometerID);
-  }
+  // public double getPotentiometer(){
+  //   return m_leonardoArduino.getRawAxis(Constants.Clawstants.PotentiometerID);
+  // }
   
   @Override
   public void periodic() {

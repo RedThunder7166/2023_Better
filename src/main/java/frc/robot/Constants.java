@@ -15,7 +15,7 @@ public final class Constants {
     public static final double stickDeadband = 0.1;
 
     public static final class Swerve {
-        public static final int pigeonID = 26;
+        public static final int pigeonID = 27;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         public static final COTSFalconSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot - DONE
@@ -73,6 +73,7 @@ public final class Constants {
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
 
+        
         /* Drive Motor Characterization Values 
          * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
         public static final double driveKS = (0.32 / 12); //TODO: This must be tuned to specific robot
@@ -83,7 +84,7 @@ public final class Constants {
         /** Meters per Second */
         public static final double maxSpeed = 3; //TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 10.0; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 3.0; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
@@ -180,10 +181,13 @@ public final class Constants {
     }
     
     public static final class Clawstants { // TODO: change claw ports
-        public static final int ClawEncoderID = 0;
         public static final int ClawMotorWristID = 28;
         public static final int ClawMotorLeftID = 26;
         public static final int ClawMotorRightID = 25;
-        public static final int PotentiometerID = 0;
+        // public static final int PotentiometerID = 0;
+
+        public static final double ClawLoadingToLowPosition = 30000; // thirty-thousand
+
+        /* Arm Motor PID Values */
     }
 }

@@ -79,9 +79,14 @@ public class CargoPlacementCommand extends CommandBase {
     //   rotation_adjust = Kp*heading_error + min_command;
     // }
 
+    double[] botpose = m_limelightSubsystem.getBotpose();
+    double x = botpose[0];
+    double y = botpose[1];
+    double yaw = botpose[5];
+
     m_driveSubsystem.drive(
-        new Translation2d(0, 0).times(Constants.Swerve.maxSpeed), 
-        tx * Constants.Swerve.maxAngularVelocity, 
+        new Translation2d(x, y).times(Constants.Swerve.maxSpeed), 
+        yaw * Constants.Swerve.maxAngularVelocity, 
         false, 
         true
     );
