@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
@@ -20,6 +21,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick REMOVE = new Joystick(2);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -40,7 +42,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-  //  private final PnuematicSubsystem s_PneumaticsHub = new PnuematicSubsystem();
+    //private final PnuematicSubsystem s_PneumaticsHub = new PnuematicSubsystem();
     private final theCLAAAWWW s_Claaawww = new theCLAAAWWW();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -54,10 +56,12 @@ public class RobotContainer {
                 () -> robotCentric.getAsBoolean()
             )
         );
+
+
    //     s_Claaawww.setDefaultCommand(new InstantCommand(() -> s_Claaawww.stop(),s_Claaawww));
 
         // Configure the button bindings
-        configureButtonBindings();
+
     }
 
     /**
@@ -74,19 +78,19 @@ public class RobotContainer {
 
         // when up button is pressed, start moving claw up
         // when down button is pressed, start moving the claw down
-        armUp.onTrue(new InstantCommand(() -> s_Claaawww.armUp()));
-        armDown.onTrue(new InstantCommand(() -> s_Claaawww.armDown()));
-        wristLeft.onTrue(new InstantCommand(() -> s_Claaawww.wristLeft()));
-        wristRight.onTrue(new InstantCommand(() -> s_Claaawww.wristRight()));
+        // armUp.onTrue(new InstantCommand(() -> s_Claaawww.armUp()));
+        // armDown.onTrue(new InstantCommand(() -> s_Claaawww.armDown()));
+        // wristLeft.onTrue(new InstantCommand(() -> s_Claaawww.wristLeft()));
+        // wristRight.onTrue(new InstantCommand(() -> s_Claaawww.wristRight()));
 
 
         // when up or down button is unpressed, stop moving the claw
         // when stop button is pressed, stop moving the claw
-        armUp.onFalse(new InstantCommand(() -> s_Claaawww.armStop()));
-        armDown.onFalse(new InstantCommand(() -> s_Claaawww.armStop()));
-        armOffset.onTrue(new InstantCommand(() -> s_Claaawww.setArmOffsets())); 
-        wristLeft.onFalse(new InstantCommand(() -> s_Claaawww.wristStop()));
-        wristRight.onFalse(new InstantCommand(() -> s_Claaawww.wristStop()));
+        // armUp.onFalse(new InstantCommand(() -> s_Claaawww.armStop()));
+        // armDown.onFalse(new InstantCommand(() -> s_Claaawww.armStop()));
+        // armOffset.onTrue(new InstantCommand(() -> s_Claaawww.setArmOffsets())); 
+        // wristLeft.onFalse(new InstantCommand(() -> s_Claaawww.wristStop()));
+        // wristRight.onFalse(new InstantCommand(() -> s_Claaawww.wristStop()));
     }
 
     /**
