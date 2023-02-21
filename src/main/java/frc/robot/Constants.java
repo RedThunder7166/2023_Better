@@ -185,11 +185,14 @@ public final class Constants {
         public static final int ClawMotorLeftID = 26;
         public static final int ClawMotorRightID = 25;
         // public static final int PotentiometerID = 0;
+        
+        public static final double armFeedForward = 0.03;
+        public static final double wristFeedForward = 0.03;
 
         public static final double ClawLoadingToLowPosition = 30000; // thirty-thousand
 
-        public static final double ClawArmGearRatio = 144;
-        public static final double ClawWristGearRatio = 30;
+        public static final double armGearRatio = 144;
+        public static final double wristGearRatio = 30;
 
         /* Arm Motor PID Values */
     }
