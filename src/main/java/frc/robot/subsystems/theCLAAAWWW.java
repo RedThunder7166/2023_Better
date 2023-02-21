@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -12,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -24,7 +26,7 @@ public class theCLAAAWWW extends SubsystemBase {
 
   private Buttons m_Buttons = new Buttons();
  // private XboxController xboxController = new XboxController(3);
-  private enum ClawState {
+  public enum ClawState {
     LOADING, LOW, MEDIUM, HIGH
   }
 
@@ -71,9 +73,9 @@ public class theCLAAAWWW extends SubsystemBase {
     clawState = ClawState.LOADING;
 
     m_armMotorLeft.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-    //m_wristMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+    m_wristMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
 
-    m_wristMotor.setNeutralMode(NeutralMode.Coast);
+    m_wristMotor.setNeutralMode(NeutralMode.Brake);
     m_armMotorLeft.setNeutralMode(NeutralMode.Brake);
     m_armMotorRight.setNeutralMode(NeutralMode.Brake);
 
@@ -88,19 +90,24 @@ public class theCLAAAWWW extends SubsystemBase {
     } else if (m_Buttons.isPressed(2)) {
       clawState = ClawState.LOW;
     }
+      else if (m_Buttons.isPressed(3)){
+        clawState = ClawState.HIGH;
+      }
 
     switch (clawState) {
       case LOADING:
         wristAngle = 0;
-        armAngle = 30;
+        armAngle = 0;
         break;
 
       case LOW:
-        wristAngle = 90;
-        armAngle = 90;
+        wristAngle = 0;
+        armAngle = 30;
         break;
 
       case HIGH:
+      wristAngle = 30;
+      armAngle = 45;
         break;
 
       case MEDIUM:
@@ -118,18 +125,18 @@ public class theCLAAAWWW extends SubsystemBase {
     m_wristMotor.configMotionCruiseVelocity(7000);
 
     //m_wristMotor.set(ControlMode.Position, 30000);
-     m_wristMotor.set( // changed from armMotorLeft
-         ControlMode.MotionMagic,
-         degreesToEncoderUnits(wristAngle, Constants.Clawstants.ClawWristGearRatio), // changed from armAngle
-         DemandType.ArbitraryFeedForward,
-         .03 * java.lang.Math.cos(encoderUnitsToDegrees(Math.toRadians(m_wristMotor.getSelectedSensorPosition()), Constants.Clawstants.ClawWristGearRatio)));
+  //   m_wristMotor.set( // changed from armMotorLeft
+    //     ControlMode.MotionMagic,
+      //   degreesToEncoderUnits(wristAngle, Constants.Clawstants.ClawWristGearRatio), // changed from armAngle
+       //  DemandType.ArbitraryFeedForward,
+         //.03 * java.lang.Math.cos(encoderUnitsToDegrees(Math.toRadians(m_wristMotor.getSelectedSensorPosition()), Constants.Clawstants.ClawWristGearRatio)));
 
-    m_armMotorLeft.set( 
-        ControlMode.MotionMagic,
-        degreesToEncoderUnits(armAngle, Constants.Clawstants.ClawArmGearRatio), // changed from armAngle
-        DemandType.ArbitraryFeedForward,
-        .03 * java.lang.Math
-            .cos(encoderUnitsToDegrees(Math.toRadians(m_armMotorLeft.getSelectedSensorPosition()), Constants.Clawstants.ClawArmGearRatio)));
+//    m_armMotorLeft.set( 
+  //      ControlMode.MotionMagic,
+    //    degreesToEncoderUnits(armAngle, Constants.Clawstants.ClawArmGearRatio), // changed from armAngle
+      //  DemandType.ArbitraryFeedForward,
+        //.03 * java.lang.Math
+          //  .cos(encoderUnitsToDegrees(Math.toRadians(m_armMotorLeft.getSelectedSensorPosition()), Constants.Clawstants.ClawArmGearRatio)));
 
     SmartDashboard.putNumber("ArmMotorLeft Sensor Position", getLeftSensorPosition());
     SmartDashboard.putNumber("ArmMotorRight Sensor Position", getRightSensorPosition());
@@ -142,9 +149,22 @@ public class theCLAAAWWW extends SubsystemBase {
     SmartDashboard.putNumber("Wrist Encoder", m_wristMotor.getSelectedSensorPosition());
 
   }
+/* Button things */
+
+public void setClawstate(ClawState CS){
+
+clawState = CS;
 
 
-  
+
+
+
+}
+
+
+
+
+
 
   public double degreesToEncoderUnits(double angle, double gearRatio) {
     // double gearRatio = 30; //changed from 144
@@ -205,5 +225,30 @@ public class theCLAAAWWW extends SubsystemBase {
     return m_armMotorRight.getSelectedSensorPosition();
   }
 
+  //*Create Claw close/open abilites */
+  CANCoder cancoder = new CANCoder(68);
+
+  VictorSPX gripperMotor = new VictorSPX(69);
+
+
+
+
+  public void driveGripper(double speed) {
+    double kMax = 1000; // TODO change value to encoder values set via Tuner
+    double kMin = 100;
+    if (cancoder.getAbsolutePosition() > kMax && speed > 0) { // absolute value v. Posistion
+      gripperMotor.set(ControlMode.Position, kMin);
+    } else if (cancoder.getAbsolutePosition() < kMin && speed < 0) {
+      gripperMotor.set(ControlMode.Position, kMax);
+
+    } else {
+      gripperMotor.set(ControlMode.PercentOutput, speed);
+
+    }
+            
  
-  }
+
+
+
+ 
+  }}
