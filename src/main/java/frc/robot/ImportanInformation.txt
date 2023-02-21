@@ -6,3 +6,6 @@ high on left
 FLIP THE WRIST ON ABOUT 30,000 ABS SENSOR POSITION FOR right ARM!!!! #Changed to avoid negatives
 ^ ALSO FOR ENUM WRIST LOADING - LOW STATE
 LOW to LOADING WILL BE OPPOSITE
+
+
+We do infact, hate the requirement for PID's 

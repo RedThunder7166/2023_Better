@@ -188,6 +188,9 @@ public final class Constants {
 
         public static final double ClawLoadingToLowPosition = 30000; // thirty-thousand
 
+        public static final double ClawArmGearRatio = 144;
+        public static final double ClawWristGearRatio = 30;
+
         /* Arm Motor PID Values */
     }
 }
