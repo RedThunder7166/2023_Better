@@ -1,8 +1,11 @@
 package frc.robot;
 
+import javax.print.DocFlavor.STRING;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -11,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.theCLAAAWWW.ClawState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,7 +25,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
-    private final Joystick REMOVE = new Joystick(2);
+    private final Joystick Operator = new Joystick(2);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -38,6 +42,9 @@ public class RobotContainer {
     private final JoystickButton wristLeft = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton wristRight = new JoystickButton(driver, XboxController.Button.kY.value);
 
+    /* Operator Buttons */
+    private final JoystickButton nodeOne = new JoystickButton(Operator, 1);
+    private final JoystickButton nodeOne = new JoystickButton(Operator, 2);
 
 
     /* Subsystems */
@@ -62,6 +69,7 @@ public class RobotContainer {
 
         // Configure the button bindings
 
+        configureButtonBindings();
     }
 
     /**
@@ -91,6 +99,18 @@ public class RobotContainer {
         // armOffset.onTrue(new InstantCommand(() -> s_Claaawww.setArmOffsets())); 
         // wristLeft.onFalse(new InstantCommand(() -> s_Claaawww.wristStop()));
         // wristRight.onFalse(new InstantCommand(() -> s_Claaawww.wristStop()));
+
+
+
+        /*Operator Buttons */
+        
+     //   nodeOne.onTrue(new InstantCommand(() -> s_Claaawww.setClawstate(ClawState.LOADING)));
+     nodeOne.onTrue(new InstantCommand(() -> SmartDashboard.putBoolean("nodeOne", true)));
+     nodeOne.onFalse(new InstantCommand(() -> SmartDashboard.putBoolean("nodeOne", false)));
+
+
+
+
     }
 
     /**

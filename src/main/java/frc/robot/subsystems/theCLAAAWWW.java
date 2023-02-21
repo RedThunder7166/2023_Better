@@ -8,12 +8,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Arm;
 import frc.robot.Wrist;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 public class theCLAAAWWW extends SubsystemBase {
   /** Creates a new theCLAAAWWW. */
   private Buttons m_Buttons = new Buttons();
 
-  private enum ClawState {
+  public enum ClawState {
+  
     LOADING, LOW, MEDIUM, HIGH
   }
 
@@ -30,6 +44,8 @@ public class theCLAAAWWW extends SubsystemBase {
 
     clawState = ClawState.LOADING;
 
+
+
   }
 
   @Override
@@ -42,6 +58,9 @@ public class theCLAAAWWW extends SubsystemBase {
     } else if (m_Buttons.isPressed(2)) {
       clawState = ClawState.LOW;
     }
+      else if (m_Buttons.isPressed(3)){
+        clawState = ClawState.HIGH;
+      }
 
     //Check to see if state has changed before moving the arm or claw.
     if (clawState != previousState) {
@@ -64,10 +83,12 @@ public class theCLAAAWWW extends SubsystemBase {
 
     // IMPORTANT - DO NOT DELETE
     // setArmMotorsAngle(armAngle);
+    
     SmartDashboard.putString("ClawState", clawState.name());
 
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
     SmartDashboard.putNumber("Wrist Angle", arm.getAngle());
+
 
     SmartDashboard.putNumber("Arm Encoder", arm.getRawEncoderUnits());
     SmartDashboard.putNumber("Wrist Encoder", wrist.getRawEncoderUnits());
